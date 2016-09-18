@@ -35,16 +35,15 @@ var viewSales = function() {
 connection.query('SELECT * FROM Departments', function(err, result) {
   if (err) throw err;
   for(var i = 0; i < result.length; i++) {
-  console.log("var tProfit = $" + (result[i].TotalSales - result[i].OverHeadCosts));
-
+  var tProfit = (result[i].TotalSales - result[i].OverHeadCosts);
   var table = new Table({
     head: ['ID', 'Department', 'Total Sales', 'Total Profit'],
-    colWidths: [6, 14, 14, 14]
+    colWidths: [6, 14, 14, 15]
   });
 
   table.push(
 
-    [result[i].DepartmentID, result[i].DepartmentTitle, "$" + result[i].TotalSales, "$" + (result[i].TotalSales - result[i].OverHeadCosts)]
+    [result[i].DepartmentID, result[i].DepartmentTitle, "$" + result[i].TotalSales.toLocaleString() + ".00", "$" + tProfit.toLocaleString() + ".00"]
     );
     console.log(table.toString());
   }

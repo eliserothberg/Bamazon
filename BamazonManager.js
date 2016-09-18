@@ -46,12 +46,12 @@ var viewProduct = function() {
 
   var table = new Table({
     head: ['ID', 'Name', 'Department', 'Price', 'Stock Quantity'],
-    colWidths: [5, 55, 12, 12, 16]
+    colWidths: [5, 55, 12, 13, 16]
   });
 
   table.push(
 
-    [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price, res[i].StockQuantity]
+    [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price.toLocaleString(), res[i].StockQuantity]
     );
     console.log(table.toString());
   }
@@ -66,12 +66,12 @@ connection.query('SELECT * FROM Products WHERE StockQuantity < 100', function(er
 
   var table = new Table({
     head: ['ID', 'Name', 'Department', 'Price', 'Stock Quantity'],
-    colWidths: [5, 55, 12, 12, 16]
+    colWidths: [5, 55, 12, 13, 16]
   });
 
   table.push(
 
-    [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price, res[i].StockQuantity]
+    [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price.toLocaleString(), res[i].StockQuantity]
     );
     console.log(table.toString());
   }
@@ -158,7 +158,7 @@ var addNewProduct = function() {
             ProductName: answer.item,
             DepartmentName: answer.department,
             StockQuantity: answer.inventory,
-            Price: answer.price
+            Price: answer.price.toLocaleString()
         }, function(err, res) {
             console.log("Your product was added successfully!");
             start();

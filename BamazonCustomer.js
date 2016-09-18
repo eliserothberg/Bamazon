@@ -21,11 +21,11 @@ connection.query('SELECT * FROM Products', function(err, result) {
   for(var i = 0; i < result.length; i++) {
   var table = new Table({
     head: ['Item ID', 'Name', 'Department', 'Price', 'In Stock'],
-    colWidths: [9, 55, 12, 12, 10]
+    colWidths: [9, 55, 12, 13, 10]
   });
 
   table.push(
-    [result[i].ItemID, result[i].ProductName, result[i].DepartmentName, "$" + result[i].Price, result[i].StockQuantity]
+    [result[i].ItemID, result[i].ProductName, result[i].DepartmentName, "$" + result[i].Price.toLocaleString(), result[i].StockQuantity]
     );
     console.log(table.toString());
   }
@@ -71,13 +71,17 @@ var pickItem = function() {
       }
       else {
         var purchasePrice = (res[answer.pickID-1].Price * answer.amount);
-        var salesTax = (res[answer.pickID-1].Price * .09);
-        var total = (parseInt(purchasePrice) + parseInt(salesTax));
+        var salesTax = (res[answer.pickID-1].Price * .090);
+        var total = (parseFloat(purchasePrice) + parseFloat(salesTax));
+        console.log("purchase = " + parseFloat(purchasePrice) + "sales tax = " + parseFloat(salesTax));
         var deptName = (res[answer.pickID-1].DepartmentName);
-        var addToTotal = parseInt(total);
+        var addToTotal = total.toLocaleString();
+        // var finalTotal = addToTotal.toFixed(2);
+
+        console.log("addtototal = " + addToTotal);
 
         console.log("Excellent choice and we have that quantity in stock!\n")
-        console.log(answer.amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + res[answer.pickID-1].Price + " each totals $" + total + " with tax.");
+        console.log(answer.amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + res[answer.pickID-1].Price.toLocaleString() + " each totals $" + total.toLocaleString() + " with tax.");
 
         connection.query("UPDATE Products SET ? WHERE ?", [{
           StockQuantity: stockAmt
