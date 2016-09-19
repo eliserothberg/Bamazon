@@ -15,13 +15,13 @@ connection.connect(function(err) {
     if (err) throw err;
     // console.log("connected as id " + connection.threadId);
 })
-//tableof items for sale
+//lists table of items for sale
 connection.query('SELECT * FROM Products', function(err, result) {
   if (err) throw err;
   for(var i = 0; i < result.length; i++) {
   var table = new Table({
     head: ['Item ID', 'Name', 'Department', 'Price', 'In Stock'],
-    colWidths: [9, 55, 12, 13, 10]
+    colWidths: [9, 55, 12, 16, 16]
   });
 
   table.push(
@@ -29,11 +29,35 @@ connection.query('SELECT * FROM Products', function(err, result) {
     );
     console.log(table.toString());
   }
-pickItem();
+options();
 })
+
+var deptName;
+var prevSales;
+var sumSales;
+
+//enables user to choose to pick an item for sale or exit
+
+var options = function() {
+  inquirer.prompt({
+    type: "list",
+    name: "choice",
+    message: "What would you like to do?",
+    choices: ["Pick an item for purchase","Exit"]
+    }).then(function(answer) {
+      if (answer.choice == "Pick an item for purchase") {
+          pickItem();
+      }       
+      else {
+        process.exit();
+      }
+    })
+  }
+
 //enables user to purchase products, tells them if it's in stock in 
-//their deisred quantity, if so, it tells them their total cost, 
+//their deireed quantity, if so, it tells them their total cost, 
 //then adjusts the in stock amount and total sales
+
 var pickItem = function() {   
   inquirer.prompt([{
     
@@ -65,37 +89,47 @@ var pickItem = function() {
       var stockAmt = (res[answer.pickID-1].StockQuantity - answer.amount);
 
       console.log("\nYou chose to purchase " + answer.amount + " of the " + res[answer.pickID-1].ProductName + " from the " + res[answer.pickID-1].DepartmentName + " department.");
-      if (stockAmt <= 0){
+      if (stockAmt < 0 ){
         console.log("I'm sorry, we do not have that quantity in stock.")
-        pickItem();
       }
-      else {
-        var purchasePrice = (res[answer.pickID-1].Price * answer.amount);
-        var salesTax = (res[answer.pickID-1].Price * .090);
-        var total = (parseFloat(purchasePrice) + parseFloat(salesTax));
-        console.log("purchase = " + parseFloat(purchasePrice) + "sales tax = " + parseFloat(salesTax));
-        var deptName = (res[answer.pickID-1].DepartmentName);
-        var addToTotal = total.toLocaleString();
-        // var finalTotal = addToTotal.toFixed(2);
+        else {
+          var purchasePrice = (res[answer.pickID-1].Price * answer.amount);
+          var salesTax = parseFloat(res[answer.pickID-1].Price * .090).toFixed(2);
+          var total = (parseFloat(purchasePrice) + parseFloat(salesTax));
+          console.log("purchase = " + parseFloat(purchasePrice) + " and sales tax = " + parseFloat(salesTax));
+          var deptName = (res[answer.pickID-1].DepartmentName);
+          var finalTotal = total.toLocaleString();
 
-        console.log("addtototal = " + addToTotal);
+          console.log("total = " + total);
 
-        console.log("Excellent choice and we have that quantity in stock!\n")
-        console.log(answer.amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + res[answer.pickID-1].Price.toLocaleString() + " each totals $" + total.toLocaleString() + " with tax.");
+          console.log("finalTotal = " + finalTotal);
 
-        connection.query("UPDATE Products SET ? WHERE ?", [{
-          StockQuantity: stockAmt
-          }, {
-          ItemID: answer.pickID
-        }], function(err, res) {});
+          console.log("Excellent choice and we have that quantity in stock!\n")
+          console.log(answer.amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + res[answer.pickID-1].Price.toLocaleString() + " each totals $" + finalTotal + " with tax.");
+
+          connection.query("UPDATE Products SET ? WHERE ?", [{
+            StockQuantity: stockAmt
+            }, {
+            ItemID: answer.pickID
+          }], function(err, res) {});
+
+          connection.query("SELECT TotalSales, DepartmentTitle FROM Departments", function(err, results) {
+              for(var i = 0; i < results.length; i++) {
+                if (results[i].DepartmentTitle == deptName) {
+                  prevSales = results[i].TotalSales;
+                  sumSales = parseFloat(total) + parseFloat(prevSales);
+              
           connection.query("UPDATE Departments SET ? WHERE ?", [{
-            TotalSales: addToTotal
+            TotalSales: sumSales
             }, {
             DepartmentTitle: deptName
-          }], function(err, res) {});           
-          // console.log("$" + total + " has been added to the sales of the " + deptName + " department.");
-        };
-      pickItem();
+            }], function(err, res) {});           
+            }
+          }
+          options();
+        })
+      };
     })
   })
 };
+
