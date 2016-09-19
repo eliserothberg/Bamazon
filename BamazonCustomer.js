@@ -96,15 +96,10 @@ var pickItem = function() {
           var purchasePrice = (res[answer.pickID-1].Price * answer.amount);
           var salesTax = parseFloat(res[answer.pickID-1].Price * .090).toFixed(2);
           var total = (parseFloat(purchasePrice) + parseFloat(salesTax));
-          console.log("purchase = " + parseFloat(purchasePrice) + " and sales tax = " + parseFloat(salesTax));
           var deptName = (res[answer.pickID-1].DepartmentName);
           var finalTotal = total.toLocaleString();
-
-          console.log("total = " + total);
-
-          console.log("finalTotal = " + finalTotal);
-
-          console.log("Excellent choice and we have that quantity in stock!\n")
+          
+          console.log("\nExcellent choice and we have that quantity in stock!\n")
           console.log(answer.amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + res[answer.pickID-1].Price.toLocaleString() + " each totals $" + finalTotal + " with tax.");
 
           connection.query("UPDATE Products SET ? WHERE ?", [{
