@@ -45,19 +45,20 @@ var start = function() {
     var viewProduct = function() {
       connection.query('SELECT * FROM Products', function(err, res) {
       if (err) throw err;
-      for(var i = 0; i < res.length; i++) {
 
       var table = new Table({
-        head: ['ID', 'Name', 'Department', 'Price', 'Stock Quantity'],
-        colWidths: [5, 55, 13, 15, 16]
+        head: ['Item\n ID', '\n               Name', '\nDepartment', '\n    Price', ' In\nStock'],
+        colWidths: [6, 55, 13, 15, 7]
       });
+      for(var i = 0; i < res.length; i++) {
 
       table.push(
 
       [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price.toLocaleString(), res[i].StockQuantity]
       );
-      console.log(table.toString());
     }
+    console.log(table.toString());
+
     start();
   })
 }
@@ -65,20 +66,21 @@ var start = function() {
 var lowInventory = function() {
 connection.query('SELECT * FROM Products WHERE StockQuantity < 100', function(err, res) {
   if (err) throw err;
-  for(var i = 0; i < res.length; i++) {
 
     var table = new Table({
-      head: ['ID', 'Name', 'Department', 'Price', 'Stock Quantity'],
-      colWidths: [5, 55, 12, 13, 16]
+      head: ['Item\n ID', '\n               Name', '\nDepartment', '\n    Price', ' In\nStock'],
+      colWidths: [6, 55, 13, 15, 7]
     });
+  for(var i = 0; i < res.length; i++) {
 
     table.push(
 
       [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price.toLocaleString(), res[i].StockQuantity]
       );
-      console.log(table.toString());
     }
-  start();
+    console.log(table.toString());
+
+    start();
   })
 }
 //add inventory
