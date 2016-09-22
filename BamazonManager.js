@@ -137,6 +137,7 @@ var addInventory = function() {
     })
   })
 };
+
 //add new product
 var addNewProduct = function() {
   inquirer.prompt([{
@@ -181,7 +182,7 @@ var addNewProduct = function() {
     {
     name: "price",
     type: "input",
-    message: "What is the cost of the item? (Enter using decimal point only, no commas.)",
+    message: "What is the cost of the item? (Enter with decimal point only, no commas.)",
       validate: function(input) {
       if (isNaN(input) == false) {
         return true;
@@ -191,17 +192,24 @@ var addNewProduct = function() {
       }
     }
   }]).then(function(answer) {
-      connection.query("INSERT INTO Products SET ?", {
-          ProductName: answer.item,
-          DepartmentName: answer.department,
-          StockQuantity: answer.inventory,
-          Price: answer.price.toLocaleString()
-          ItemID: 
-      }, 
-      function(err, res) {
-          console.log("\n" + answer.inventory + " of " + answer.item + " at the cost of " + answer.price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " added to the " + answer.department + " category.\n");
-          start();
-      });
+      connection.query('SELECT LENGTH(ItemID) FROM Products', function(err, res) {
+        var newID = res.length + 1;
+
+          connection.query("INSERT INTO Products SET ?", {
+            ProductName: answer.item,
+            DepartmentName: answer.department,
+            StockQuantity: answer.inventory,
+            Price: answer.price.toLocaleString(),
+            ItemID: newID
+        }, 
+
+          function(err, res) {
+            var pPrice = parseFloat(answer.price).toFixed(2);
+
+            console.log("\n" + answer.inventory + " of " + answer.item + " at the cost of $" + pPrice.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " added to the " + answer.department + " category.\n");
+            start();
+        });
+      })
     })
   }
 }

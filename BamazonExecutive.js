@@ -100,10 +100,13 @@ var options = function() {
       }
     }
       }]).then(function(answer) {
+        connection.query('SELECT LENGTH(DepartmentID) FROM Departments', function(err, res) {
+        var newDeptID = res.length + 1;
         connection.query("INSERT INTO Departments SET ?", {
           DepartmentTitle: answer.dept,
           OverHeadCosts: answer.costs,
           TotalSales: answer.sales,
+          DepartmentID: newDeptID
           }, 
           function(err, res) {
             var overhead = parseFloat(answer.costs).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
@@ -112,6 +115,7 @@ var options = function() {
             options();
           });
         })
+      })
       }
     }
 

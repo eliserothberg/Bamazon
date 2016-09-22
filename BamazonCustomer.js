@@ -110,8 +110,6 @@ var pickItem = function() {
         choices: ["Yes","No", "Exit"]
         }).then(function(answer) {
           if (answer.choice == "Yes") {
-            console.log(amount);
-
               otherQuantity();
           }       
           else if (answer.choice == "No") {
