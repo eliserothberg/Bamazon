@@ -1,0 +1,29 @@
+{
+  "name": "bamazon_package",
+  "version": "1.0.0",
+  "description": "bamazon_npms",
+  "main": "BamazonCustomer.js",
+  "dependencies": {
+    "cli-table": "^0.3.1",
+    "inquirer": "^1.1.3",
+    "mysql": "^2.11.1",
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliserothberg/Bamazon.git"
+  },
+  "keywords": [
+    "bamazon"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eliserothberg/Bamazon/issues"
+  },
+  "homepage": "https://github.com/eliserothberg/Bamazon#readme"
+}
