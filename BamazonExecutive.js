@@ -46,11 +46,11 @@ var options = function() {
       });
 
       for(var i = 0; i < result.length; i++) {
-        var tProfit = (result[i].TotalSales - result[i].OverHeadCosts);
-
+        var tProfit = (result[i].TotalSales - result[i].OverHeadCosts).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+      
         table.push(
 
-        [result[i].DepartmentID, result[i].DepartmentTitle, "$" + result[i].OverHeadCosts.toLocaleString(),"$" + result[i].TotalSales.toLocaleString(), "$" + tProfit.toLocaleString()]
+        [result[i].DepartmentID, result[i].DepartmentTitle, "$" + result[i].OverHeadCosts.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'),"$" + result[i].TotalSales.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'), "$" + tProfit]
         );
       }
       console.log(table.toString());
@@ -106,7 +106,9 @@ var options = function() {
           TotalSales: answer.sales,
           }, 
           function(err, res) {
-            console.log("\nYour department " + answer.dept + " with overhead costs of $" + parseFloat(answer.costs).toLocaleString() + " and total sales of $" + parseFloat(answer.sales).toLocaleString() + " was successfully added.\n");
+            var overhead = parseFloat(answer.costs).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+            var totSales = parseFloat(answer.sales).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+            console.log("\nYour department " + answer.dept + " with overhead costs of $" + overhead + " and total sales of $" + totSales + " was successfully added.\n");
             options();
           });
         })

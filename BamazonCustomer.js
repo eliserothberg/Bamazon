@@ -26,7 +26,7 @@ connection.query('SELECT * FROM Products', function(err, result) {
   
   for(var i = 0; i < result.length; i++) {
     table.push(
-      [result[i].ItemID, result[i].ProductName, result[i].DepartmentName, "$" + result[i].Price.toLocaleString(), result[i].StockQuantity]
+      [result[i].ItemID, result[i].ProductName, result[i].DepartmentName, "$" + result[i].Price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'), result[i].StockQuantity]
     );
   }
   console.log(table.toString());
@@ -126,14 +126,16 @@ var pickItem = function() {
     function otherQuantity() {
 
       var stockAmt = (res[answer.pickID-1].StockQuantity - amount);
-      var purchasePrice = (res[answer.pickID-1].Price * amount);
-      var salesTax = parseFloat(res[answer.pickID-1].Price * .090).toFixed(2);
+      var itemPrice = res[answer.pickID-1].Price;
+      var purchasePrice = itemPrice * amount;
+      var salesTax = parseFloat(res[answer.pickID-1].Price * .090).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
       var total = (parseFloat(purchasePrice) + parseFloat(salesTax));
       var deptName = (res[answer.pickID-1].DepartmentName);
-      var finalTotal = total.toLocaleString();
+      var finalTotal = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+      
 
       console.log("\nExcellent choice and we have that quantity in stock!\n")
-      console.log(amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + res[answer.pickID-1].Price.toLocaleString() + " each totals $" + finalTotal + " with tax.\n");
+      console.log(amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + itemPrice.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " each totals $" + finalTotal + " with tax.\n");
 
       //adjusts the in-stock amount 
       connection.query("UPDATE Products SET ? WHERE ?", [{

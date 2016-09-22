@@ -55,7 +55,7 @@ var start = function() {
 
       table.push(
 
-      [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price.toLocaleString(), res[i].StockQuantity]
+      [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'), res[i].StockQuantity]
       );
     }
     console.log(table.toString());
@@ -77,7 +77,7 @@ connection.query('SELECT * FROM Products WHERE StockQuantity < 100', function(er
 
     table.push(
 
-      [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price.toLocaleString(), res[i].StockQuantity]
+      [res[i].ItemID, res[i].ProductName, res[i].DepartmentName, "$" + res[i].Price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,'), res[i].StockQuantity]
       );
     }
     console.log(table.toString());
@@ -196,9 +196,10 @@ var addNewProduct = function() {
           DepartmentName: answer.department,
           StockQuantity: answer.inventory,
           Price: answer.price.toLocaleString()
+          ItemID: 
       }, 
       function(err, res) {
-          console.log("\n" + answer.inventory + " of " + answer.item + " added to the " + answer.department + " category.\n");
+          console.log("\n" + answer.inventory + " of " + answer.item + " at the cost of " + answer.price.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " added to the " + answer.department + " category.\n");
           start();
       });
     })
