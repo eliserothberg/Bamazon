@@ -38,20 +38,23 @@ var options = function() {
     var viewSales = function() {
     connection.query('SELECT * FROM Departments', function(err, result) {
       if (err) throw err;
-      for(var i = 0; i < result.length; i++) {
-      var tProfit = (result[i].TotalSales - result[i].OverHeadCosts);
 
       var table = new Table({
-        head: ['ID', 'Department', 'Total Sales', 'Total Profit'],
-        colWidths: [6, 14, 16, 16]
+        head: ['ID', 'Department ', 'Total Sales ', 'Total Profit '],
+        colAligns: ['null', 'null', 'null', 'null'],
+        colWidths: [4, 14, 16, 16]
       });
 
-      table.push(
+      for(var i = 0; i < result.length; i++) {
+        var tProfit = (result[i].TotalSales - result[i].OverHeadCosts);
 
-      [result[i].DepartmentID, result[i].DepartmentTitle, "$" + result[i].TotalSales.toLocaleString(), "$" + tProfit.toLocaleString()]
-      );
-      console.log(table.toString());
+        table.push(
+
+        [result[i].DepartmentID, result[i].DepartmentTitle, "$" + result[i].TotalSales.toLocaleString(), "$" + tProfit.toLocaleString()]
+        );
       }
+      console.log(table.toString());
+
       options();
     })
   }
@@ -61,31 +64,41 @@ var options = function() {
     inquirer.prompt([{
       name: "dept",
       type: "input",
-      message: "What is the name of the department you would like to add?"
+      message: "What is the name of the department you would like to add?",
+        validate: function(input) {
+          if (isNaN(input) !== false) {
+            return true;
+          } else {
+            console.log("\n\nSorry, you cannot enter only numbers.\n");
+            return false;
+          }
+        }
       }, 
       {
       name: "costs",
       type: "input",
       message: "What are the overhead costs?",
-      validate: function(value) {
-          if (isNaN(value) == false) {
-              return true;
-          } else {
-              return false;
-          }
+      validate: function(input) {
+        if (isNaN(input) == false) {
+          return true;
+        } else {
+          console.log("\n\nSorry, that was not a number.\n");
+          return false;
         }
+      }
       }, 
       {
       name: "sales",
       type: "input",
       message: "What are the total sales?",
-      validate: function(value) {
-        if (isNaN(value) == false) {
-            return true;
-        } else {
-            return false;
-        }
+      validate: function(input) {
+      if (isNaN(input) == false) {
+        return true;
+      } else {
+        console.log("\n\nSorry, that was not a number.\n");
+        return false;
       }
+    }
       }]).then(function(answer) {
         connection.query("INSERT INTO Departments SET ?", {
           DepartmentTitle: answer.dept,
@@ -93,7 +106,7 @@ var options = function() {
           TotalSales: answer.sales,
           }, 
           function(err, res) {
-            console.log("Your department was added successfully!");
+            console.log("\nYour department " + answer.dept + " with overhead costs of $" + parseFloat(answer.costs).toLocaleString() + " and total sales of $" + parseFloat(answer.sales).toLocaleString() + " was successfully added.\n");
             options();
           });
         })

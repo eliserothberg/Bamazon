@@ -13,7 +13,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
     if (err) throw err;
-    console.log("connected as id " + connection.threadId);
+    // console.log("connected as id " + connection.threadId);
     start();
 })
 // Set up question categories- view products or inventory, 
@@ -47,7 +47,8 @@ var start = function() {
       if (err) throw err;
 
       var table = new Table({
-        head: ['Item\n ID', '\n               Name', '\nDepartment', '\n    Price', ' In\nStock'],
+        head: ['Item\nID ', '\n                     Name', '\nDepartment', '\nPrice   ', ' In\nStock'],
+        colAligns: ['center', 'left', 'left', 'null', 'left'],
         colWidths: [6, 55, 13, 15, 7]
       });
       for(var i = 0; i < res.length; i++) {
@@ -68,7 +69,8 @@ connection.query('SELECT * FROM Products WHERE StockQuantity < 100', function(er
   if (err) throw err;
 
     var table = new Table({
-      head: ['Item\n ID', '\n               Name', '\nDepartment', '\n    Price', ' In\nStock'],
+      head: ['Item\nID ', '\n                     Name', '\nDepartment', '\nPrice   ', ' In\nStock'],
+      colAligns: ['center', 'left', 'left', 'null', 'left'],
       colWidths: [6, 55, 13, 15, 7]
     });
   for(var i = 0; i < res.length; i++) {
@@ -90,11 +92,12 @@ var addInventory = function() {
   name: "pick",
   type: "input",
   message: "To add inventory, choose the item's ID#",
-    validate: function(value) {
-      if (isNaN(value) == false) {
-          return true;
+    validate: function(input) {
+      if (isNaN(input) == false) {
+        return true;
       } else {
-          return false;
+        console.log("\n\nSorry, that was not a number.\n");
+        return false;
       }
     }
   },
@@ -102,12 +105,14 @@ var addInventory = function() {
   name: "add",
   type: "input",
   message: "How many items are you adding?",   
-  validate: function(value) {
-    if (isNaN(value) == false) {
+  validate: function(input) {
+      if (isNaN(input) == false) {
         return true;
-    } else {
+      } else {
+        console.log("\n\nSorry, that was not a number.\n");
         return false;
-    }
+      }
+    
   }
 }]).then(function(answer) {
   connection.query('SELECT * FROM Products', function(err, res) {
@@ -115,12 +120,10 @@ var addInventory = function() {
     var stockAmt = (res[answer.pick -1].StockQuantity);
     var plusStock = answer.add;
     var newStockAmt = (parseInt(stockAmt) + parseInt(plusStock));
-    console.log("stockAmt = " + stockAmt);
-    console.log("newStockAmt  = " + newStockAmt);
+    console.log("\nYou have added " + answer.add + " items to the " + res[answer.pick-1].ProductName + " inventory.\nThe updated stock amount of " + res[answer.pick-1].ProductName + " is now " + newStockAmt + ".\n");
 
-    console.log("\nYou have added " + answer.add + " items to the " + res[answer.pick-1].ProductName + " inventory.");
     if (answer.add <= 0){
-      console.log("Sorry, you have entered nothing to add.")
+      console.log("\nSorry, you have not entered anything to add.\n")
     }
     else {
       connection.query("UPDATE Products SET ? WHERE ?", [{
@@ -139,28 +142,52 @@ var addNewProduct = function() {
   inquirer.prompt([{
     name: "item",
     type: "input",
-    message: "What is the product you would like to add?"
+    message: "What is the product you would like to add?",
+    validate: function(input) {
+        if (isNaN(input) !== false) {
+          return true;
+        } else {
+          console.log("\nSorry, you cannot only numbers.\n");
+          return false;
+        }
+      }
     }, 
     {
     name: "department",
     type: "input",
-    message: "What category would you like to place the product in?"
+    message: "In which category would you like to place the product?",
+    validate: function(input) {
+        if (isNaN(input) !== false) {
+          return true;
+        } else {
+          console.log("\nSorry, you cannot enter only numbers.\n");
+          return false;
+        }
+      }
     }, 
     {
     name: "inventory",
     type: "input",
-    message: "How many items are available?"
+    message: "How many items are available?",
+      validate: function(input) {
+        if (isNaN(input) == false) {
+          return true;
+        } else {
+          console.log("\nSorry, that was not a number.\n");
+          return false;
+        }
+      }
     }, 
     {
     name: "price",
     type: "input",
     message: "What is the cost of the item? (Enter using decimal point only, no commas.)",
-    validate: function(value) {
-      if (isNaN(value) == false) {
-          return true;
-      } 
-      else {
-          return false;
+      validate: function(input) {
+      if (isNaN(input) == false) {
+        return true;
+      } else {
+        console.log("\nSorry, that was not a number.\n");
+        return false;
       }
     }
   }]).then(function(answer) {
@@ -171,7 +198,7 @@ var addNewProduct = function() {
           Price: answer.price.toLocaleString()
       }, 
       function(err, res) {
-          console.log("Your product was added successfully!");
+          console.log("\n" + answer.inventory + " of " + answer.item + " added to the " + answer.department + " category.\n");
           start();
       });
     })

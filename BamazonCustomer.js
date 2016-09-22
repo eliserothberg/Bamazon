@@ -19,16 +19,17 @@ connection.query('SELECT * FROM Products', function(err, result) {
   if (err) throw err;
   
   var table = new Table({
-    head: ['Item\n ID', '\n               Name', '\nDepartment', '\n    Price', ' In\nStock'],
+    head: ['Item\nID ', '\n                     Name', '\nDepartment', '\nPrice   ', 'In  \nStock'],
+    colAligns: ['null', 'left', 'left', 'null', 'null'],
     colWidths: [6, 55, 13, 15, 7]
   });
   
   for(var i = 0; i < result.length; i++) {
-  table.push(
-    [result[i].ItemID, result[i].ProductName, result[i].DepartmentName, "$" + result[i].Price.toLocaleString(), result[i].StockQuantity]
+    table.push(
+      [result[i].ItemID, result[i].ProductName, result[i].DepartmentName, "$" + result[i].Price.toLocaleString(), result[i].StockQuantity]
     );
   }
-      console.log(table.toString());
+  console.log(table.toString());
 
   options();
 })
@@ -61,11 +62,12 @@ var pickItem = function() {
     
     name: "pickID",
     type: "input",
-    message: "Enter the Item ID number of the product you would like to purchase.",
-      validate: function(value) {
-        if (isNaN(value) == false) {
-            return true;
+    message: "Enter the Item ID number of the product you would like to purchase:",
+      validate: function(input) {
+        if (isNaN(input) == false) {
+        return true;
         } else {
+            console.log("\n\nSorry, that is not a number.\n");
             return false;
         }
       }
@@ -73,12 +75,14 @@ var pickItem = function() {
     {
     name: "amount",
     type: "input",
-    message: "Enter the number of this item you wish to purchase.",   
-    validate: function(value) {
-      if (isNaN(value) == false) {
-          return true;
+    message: "Enter the number of this item you wish to purchase:",   
+    
+    validate: function(input) {
+      if (isNaN(input) == false) {
+        return true;
       } else {
-          return false;
+        console.log("\n\nSorry, that is not a number.\n");
+      return false;
       }
     }
   // checks stock
@@ -96,7 +100,7 @@ var pickItem = function() {
       //if items(s) not in stock, offers customer the amount that is in stock
       function lessStock() {
       
-      console.log("\nI'm sorry, we only have " + res[answer.pickID-1].StockQuantity + " in stock.");
+      console.log("\nI'm sorry, we only have " + res[answer.pickID-1].StockQuantity + " in stock.\n");
          amount = res[answer.pickID-1].StockQuantity;
 
       inquirer.prompt({
@@ -129,7 +133,7 @@ var pickItem = function() {
       var finalTotal = total.toLocaleString();
 
       console.log("\nExcellent choice and we have that quantity in stock!\n")
-      console.log(amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + res[answer.pickID-1].Price.toLocaleString() + " each totals $" + finalTotal + " with tax.");
+      console.log(amount + " " + res[answer.pickID-1].ProductName + " at " + "$" + res[answer.pickID-1].Price.toLocaleString() + " each totals $" + finalTotal + " with tax.\n");
 
       //adjusts the in-stock amount 
       connection.query("UPDATE Products SET ? WHERE ?", [{
