@@ -7,7 +7,7 @@ Link to video: https://www.youtube.com/watch?v=VCtERk7q7Tk&feature=youtu.be
 Two small updates post-video: 
 
 https://cloud.githubusercontent.com/assets/17794498/18735731/0ccd9fac-8035-11e6-9b8e-4d34a71b7cac.png
-
+https://cloud.githubusercontent.com/assets/17794498/18735728/08a611e8-8035-11e6-9287-b6865adbf0e2.png
 
 ```
 What would you like to do? Add A New Department
