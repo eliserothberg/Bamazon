@@ -40,9 +40,9 @@ var options = function() {
       if (err) throw err;
 
       var table = new Table({
-        head: ['ID', 'Department ', 'Total Sales ', 'Total Profit '],
-        colAligns: ['null', 'null', 'null', 'null'],
-        colWidths: [4, 14, 16, 16]
+        head: ['ID', 'Department ', 'Overhead Costs', 'Total Sales ', 'Total Profit '],
+        colAligns: ['null', 'null', 'null', 'null', 'null'],
+        colWidths: [4, 14, 16, 16, 16]
       });
 
       for(var i = 0; i < result.length; i++) {
@@ -50,7 +50,7 @@ var options = function() {
 
         table.push(
 
-        [result[i].DepartmentID, result[i].DepartmentTitle, "$" + result[i].TotalSales.toLocaleString(), "$" + tProfit.toLocaleString()]
+        [result[i].DepartmentID, result[i].DepartmentTitle, "$" + result[i].OverHeadCosts.toLocaleString(),"$" + result[i].TotalSales.toLocaleString(), "$" + tProfit.toLocaleString()]
         );
       }
       console.log(table.toString());
