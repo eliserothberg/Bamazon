@@ -6,14 +6,7 @@ Link to video: https://www.youtube.com/watch?v=VCtERk7q7Tk&feature=youtu.be
 
 Two small updates post-video: 
 
-<!-- [dept add commas in $ amts](Bamazon/inventoryNaNspace.png)
-[dept add commas in $ amts](Bamazon/deptAddCommas.png) -->
-![dept add commas in $ amts](https://eliserothberg.github.com/Bamazon/deptAddCommas.png)
-![space after NaN inventory add](https://eliserothberg.github.com/images/inventoryNaNspace.png)
-
-[https://github.com/eliserothberg/Bamazon/blob/master/img/inventoryNaNspace.png|alt= space after NaN inventory add]
-
-[https://github.com/eliserothberg/Bamazon/blob/master/img/deptAddCommas.png|alt= added dept add commas in $ amts]
+https://cloud.githubusercontent.com/assets/17794498/18735731/0ccd9fac-8035-11e6-9b8e-4d34a71b7cac.png
 
 
 ```
