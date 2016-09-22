@@ -6,8 +6,10 @@ Link to video: https://www.youtube.com/watch?v=VCtERk7q7Tk&feature=youtu.be
 
 Two small updates post-video: 
 
-[dept add commas in $ amts](Bamazon/inventoryNaNspace.png)
-[dept add commas in $ amts](Bamazon/deptAddCommas.png)
+<!-- [dept add commas in $ amts](Bamazon/inventoryNaNspace.png)
+[dept add commas in $ amts](Bamazon/deptAddCommas.png) -->
+![dept add commas in $ amts](https://eliserothberg.github.com/Bamazon/deptAddCommas.png)
+![space after NaN inventory add](https://eliserothberg.github.com/images/inventoryNaNspace.png)
 
 [https://github.com/eliserothberg/Bamazon/blob/master/img/inventoryNaNspace.png|alt= space after NaN inventory add]
 
@@ -15,8 +17,7 @@ Two small updates post-video:
 
 
 ```
-What would you like to do?
-Add A New Department? 
+What would you like to do? Add A New Department
 What is the name of the department you would like to add? Games
 What are the overhead costs? 250755.55
  What are the total sales? 1235775.75
