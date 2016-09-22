@@ -6,12 +6,12 @@ Link to video: https://www.youtube.com/watch?v=VCtERk7q7Tk&feature=youtu.be
 
 Two small updates post-video: 
 
-![alt text](screenshots/inventoryNaNspace.png "Description goes here")
-![alt text](screenshots/deptAddCommas.png "Description goes here")
+[dept add commas in $ amts](Bamazon/inventoryNaNspace.png)
+[dept add commas in $ amts](Bamazon/deptAddCommas.png)
 
-[[https://github.com/eliserothberg/Bamazon/blob/master/img/inventoryNaNspace.png|alt= space after NaN inventory add]]
+[https://github.com/eliserothberg/Bamazon/blob/master/img/inventoryNaNspace.png|alt= space after NaN inventory add]
 
-[[https://github.com/eliserothberg/Bamazon/blob/master/img/deptAddCommas.png|alt= added dept add commas in $ amts]]
+[https://github.com/eliserothberg/Bamazon/blob/master/img/deptAddCommas.png|alt= added dept add commas in $ amts]
 
 
 ```
